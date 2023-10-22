@@ -13,6 +13,15 @@ class Hero(db.Model):
 
     powers = db.relationship("Power", secondary="hero_powers", back_populates="heroes")
 
+    def serialize(self):
+        serial_powers = [power.serialize() for power in self.powers]
+        return {
+            "id": self.id,
+            "name": self.name,
+            "super_name": self.super_name,
+            "powers": serial_powers,
+        }
+
 
 class Power(db.Model):
     __tablename__ = "powers"
@@ -22,6 +31,9 @@ class Power(db.Model):
     description = db.Column(db.String(500), nullable=False)
 
     heroes = db.relationship("Hero", secondary="hero_powers", back_populates="powers")
+
+    def serialize(self):
+        return {"id": self.id, "name": self.name, "description": self.description}
 
 
 class HeroPower(db.Model):
@@ -40,6 +52,9 @@ class HeroPower(db.Model):
     power = db.relationship(
         "Power", backref=backref("hero_powers", cascade="all, delete-orphan")
     )
+
+    def serialize(self):
+        return self.hero.serialize()
 
     @validates("strength")
     def validate_strength(self, key, value):
