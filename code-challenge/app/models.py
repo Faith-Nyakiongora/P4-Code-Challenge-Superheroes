@@ -30,8 +30,10 @@ class HeroPower(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     strength = db.Column(db.String(20), nullable=False)
 
-    hero_id = db.Column(db.Integer, db.ForeignKey("heroes.id"), nullable=False)
-    power_id = db.Column(db.Integer, db.ForeignKey("powers.id"), nullable=False)
+    hero_id = db.Column(db.Integer, db.ForeignKey("hero.id"), nullable=False)
+    power_id = db.Column(
+        db.Integer, db.ForeignKey("powers.id"), nullable=False
+    )  # Added ForeignKey for power_id
     hero = db.relationship(
         "Hero", backref=backref("hero_powers", cascade="all, delete-orphan")
     )
