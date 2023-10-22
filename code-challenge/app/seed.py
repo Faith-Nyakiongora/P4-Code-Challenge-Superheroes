@@ -9,7 +9,6 @@ with app.app_context():
     db.session.query(Power).delete()
 
     print("🦸‍♀️ Seeding powers...")
-    # Create sample powers
     power1 = Power(
         name="Super Strength", description="Gives the wielder super-human strength"
     )
